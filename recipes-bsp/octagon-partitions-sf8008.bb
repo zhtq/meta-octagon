@@ -6,7 +6,7 @@ PACKAGE_ARCH = "${MACHINE_ARCH}"
 
 inherit deploy
 
-SRCDATE = "20180910"
+SRCDATE = "20190917"
 PR = "${SRCDATE}"
 
 S = "${WORKDIR}/patitions"
@@ -14,11 +14,13 @@ S = "${WORKDIR}/patitions"
 SRC_URI = "http://source.mynonpublic.com/octagon/${MACHINE}-partitions-${SRCDATE}.zip"
 
 ALLOW_EMPTY_${PN} = "1"
+do_configure[nostamp] = "1"
 
 do_install() {
     install -d ${D}/usr/share
     install -m 0644 ${S}/bootargs.bin ${D}/usr/share/bootargs.bin
     install -m 0644 ${S}/fastboot.bin ${D}/usr/share/fastboot.bin
+    install -m 0644 ${S}/apploader.bin ${D}/usr/share/apploader.bin
 }
 
 FILES_${PN} = "/usr/share"
@@ -38,7 +40,7 @@ do_deploy() {
 
 addtask deploy before do_build after do_install
 
-SRC_URI[md5sum] = "e40ac29c724bc44cd552ec639963ec3d"
-SRC_URI[sha256sum] = "7380f574d467a880416f6ef85f7378b8b500379e85e9e2726079853d1dd24bbc"
+SRC_URI[md5sum] = "06b24e90a4ac5c0efd96aaa551044714"
+SRC_URI[sha256sum] = "1c3e15bac9068f2f37336f0b05464bd0adc71d1fed7a423c5b7b7645ec58db7c"
 
 INSANE_SKIP_${PN} += "already-stripped"

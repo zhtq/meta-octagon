@@ -1,4 +1,4 @@
-SUMMARY = "Creat the usb ugrade file"
+SUMMARY = "Create the usb ugrade file"
 LICENSE = "CLOSED"
 
 SRC_URI = "file://buildimage.zip"

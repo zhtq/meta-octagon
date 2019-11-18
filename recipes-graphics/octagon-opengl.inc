@@ -5,10 +5,9 @@ LICENSE = "CLOSED"
 PACKAGE_ARCH = "${MACHINE_ARCH}"
 
 PR = "${SRCDATE}"
-VER ?= "${@bb.utils.contains('TARGET_ARCH', 'aarch64', '64' , '', d)}"
 
 PROVIDES = "virtual/libgles1 virtual/libgles2 virtual/egl"
-RPROVIDES_${PN} = "libmali.so libEGL.so libGLESv1_CM.so libGLESv2.so"
+RPROVIDES_${PN} = "virtual/libgles1 virtual/libgles2 virtual/egl libEGL.so libGLESv2.so libmali.so"
 
 SRC_URI = "http://source.mynonpublic.com/octagon/${MACHINE}-opengl-${SRCDATE}.tar.gz"
 
@@ -27,9 +26,8 @@ EOF
 
 do_install() {
     install -d ${D}${libdir}
-	install -d ${D}${sysconfdir}/udev/rules.d
+    install -d ${D}${sysconfdir}/udev/rules.d
     install -m 0755 ${S}/lib/libMali.so ${D}${libdir}
-	ln -sf libMali.so ${D}${libdir}/libmali.so
     ln -sf libMali.so ${D}${libdir}/libGLESv2.so.2.0
     ln -sf libGLESv2.so.2.0 ${D}${libdir}/libGLESv2.so.2
     ln -sf libGLESv2.so.2 ${D}${libdir}/libGLESv2.so
@@ -39,7 +37,7 @@ do_install() {
     ln -sf libMali.so ${D}${libdir}/libEGL.so.1.4
     ln -sf libEGL.so.1.4 ${D}${libdir}/libEGL.so.1
     ln -sf libEGL.so.1 ${D}${libdir}/libEGL.so
-	install -m 0644 ${S}/50-mali.rules ${D}${sysconfdir}/udev/rules.d/50-mali.rules
+    install -m 0644 ${S}/50-mali.rules ${D}${sysconfdir}/udev/rules.d/50-mali.rules
     install -d ${D}${includedir}
     install -m 0644 ${S}/include/hi_dbe.h ${D}${includedir}/
     for d in EGL GLES GLES2 KHR; do
@@ -53,7 +51,7 @@ do_install() {
 do_package_qa() {
 }
 
-FILES_${PN} = "${libdir} /etc/udev/rules.d/50-mali.rules"
-FILES_${PN}-dev = "${incdir}"
+FILES_${PN} = "${libdir}/* /etc/udev/rules.d/50-mali.rules"
+FILES_${PN}-dev = "${includedir}/*"
 
 INSANE_SKIP_${PN} += "already-stripped dev-so ldflags"
