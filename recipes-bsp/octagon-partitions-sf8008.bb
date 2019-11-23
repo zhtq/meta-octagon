@@ -15,13 +15,7 @@ SRC_URI = "http://source.mynonpublic.com/octagon/${MACHINE}-partitions-${SRCDATE
 
 ALLOW_EMPTY_${PN} = "1"
 do_configure[nostamp] = "1"
-
-do_install() {
-    install -d ${D}/usr/share
-    install -m 0644 ${S}/bootargs.bin ${D}/usr/share/bootargs.bin
-    install -m 0644 ${S}/fastboot.bin ${D}/usr/share/fastboot.bin
-    install -m 0644 ${S}/apploader.bin ${D}/usr/share/apploader.bin
-}
+do_install[noexec] = "1"
 
 FILES_${PN} = "/usr/share"
 
