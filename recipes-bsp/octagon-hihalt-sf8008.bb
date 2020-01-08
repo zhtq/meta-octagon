@@ -17,6 +17,8 @@ inherit update-rc.d
 
 SRC_URI  = "http://source.mynonpublic.com/octagon/${MACHINE}-hihalt-${SRCDATE}.tar.gz \
     file://suspend.sh \
+    file://standby_leave.sh \
+    file://standby_enter.sh \
 "
 
 S = "${WORKDIR}"
@@ -26,6 +28,9 @@ do_install() {
     install -m 0755 ${S}/hihalt ${D}/${bindir}
     install -d ${D}${sysconfdir}/init.d
     install -m 0755 ${S}/suspend.sh ${D}${sysconfdir}/init.d/suspend
+    install -d ${D}/usr/script
+    install -m 0755 ${S}/standby_leave.sh ${D}/usr/script/standby_leave.sh
+    install -m 0755 ${S}/standby_enter.sh ${D}/usr/script/standby_enter.sh
 }
 
 do_package_qa() {
