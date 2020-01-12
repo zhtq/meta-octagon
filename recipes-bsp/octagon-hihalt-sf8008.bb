@@ -36,7 +36,7 @@ do_install() {
 do_package_qa() {
 }
 
-FILES_${PN}  = "${bindir}/hihalt ${sysconfdir}/init.d"
+FILES_${PN}  = "${bindir}/hihalt ${sysconfdir}/init.d /usr/script"
 
 SRC_URI[md5sum] = "bae519aa059c42c559469cf9ef16bcd7"
 SRC_URI[sha256sum] = "aa1616f08fe4b4c5e5431d5473bad6671e7b86958ca2a0be1373d79fee65199e"
