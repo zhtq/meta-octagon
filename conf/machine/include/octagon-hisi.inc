@@ -1,9 +1,11 @@
-include conf/machine/include/autoload-filesystems.inc
+KERNEL_MODULE_AUTOLOAD += "xfs"
+
 # We know about rtc
-include conf/machine/include/build-extras.inc
+MACHINE_FEATURES_BACKFILL_CONSIDERED = "rtc"
+
 
 MTD_KERNEL = "mmcblk0p12"
-MTD_ROOTFS = "mmcblk0p13"
+MTD_ROOTFS = "mmcblk0p16"
 KERNEL_FILE = "kernel.bin"
 ROOTFS_FILE = "rootfs.tar.bz2"
 
@@ -24,6 +26,7 @@ MACHINE_ESSENTIAL_EXTRA_RDEPENDS = "\
 
 MACHINE_ESSENTIAL_EXTRA_RRECOMMENDS = "\
 	kernel-module-cdfs \
+	${@bb.utils.contains('MACHINE_FEATURES', 'emmc', 'partitions-by-name' , '', d)} \
 	firmware-carl9170 \
 	firmware-htc7010 \
 	firmware-htc9271 \
@@ -73,14 +76,15 @@ PREFERRED_PROVIDER_virtual/blindscan-dvbs = "octagon-blindscan-${MACHINE}"
 
 PREFERRED_RPROVIDER_showiframe = "octagon-showiframe-${MACHINE}"
 PREFERRED_RPROVIDER_aio-grab = "octagon-grab-${MACHINE}"
+PREFERRED_PROVIDER_virtual/gstreamer1.0-dvbmediasink ?= "gstreamer1.0-plugin-dvbmediasink"
 
 require conf/machine/include/tune-cortexa15.inc
 
 # Qt
-PACKAGECONFIG_GL_pn-qtbase = "no-opengl linuxfb"
-
+PACKAGECONFIG_GL_pn-qtbase = "gles2 eglfs linuxfb"
+PACKAGECONFIG_FB_pn-qtbase = " "
 # Kodi
-EXTRA_OECONF_append_pn-kodi += " --with-gpu=mali --enable-player=hiplayer"
+#EXTRA_OECONF_append_pn-kodi += " --with-gpu=mali --enable-player=hiplayer"
 
 MACHINE_EXTRA_RRECOMMENDS = " \
 	ffmpeg \
@@ -96,7 +100,13 @@ IMAGEVERSION[vardepsexclude] = "DATE"
 
 IMAGE_CMD_octagonemmc_append = "\
     mkdir -p ${DEPLOY_DIR_IMAGE}/${IMAGEDIR}; \
-    cp ${IMGDEPLOYDIR}/${IMAGE_NAME}.rootfs.ext4 ${DEPLOY_DIR_IMAGE}/${MACHINE}-partitions/rootfs.ext4; \
+    mkdir -p ${DEPLOY_DIR_IMAGE}/userdata; \
+    mkdir -p ${DEPLOY_DIR_IMAGE}/userdata/linuxrootfs1; \
+    mkdir -p ${DEPLOY_DIR_IMAGE}/userdata/linuxrootfs2; \
+    mkdir -p ${DEPLOY_DIR_IMAGE}/userdata/linuxrootfs3; \
+    mkdir -p ${DEPLOY_DIR_IMAGE}/userdata/linuxrootfs4; \
+    cp -a ${IMAGE_ROOTFS}/* ${DEPLOY_DIR_IMAGE}/userdata/linuxrootfs1/; \
+    mkfs.ext4 -F -i 4096 ${DEPLOY_DIR_IMAGE}/${MACHINE}-partitions/rootfs.ext4 -d ${DEPLOY_DIR_IMAGE}/userdata; \
     cd ${IMAGE_ROOTFS}; \
     tar -cvf ${DEPLOY_DIR_IMAGE}/rootfs.tar -C ${IMAGE_ROOTFS} .; \
     mv ${DEPLOY_DIR_IMAGE}/rootfs.tar ${DEPLOY_DIR_IMAGE}/${IMAGEDIR}/rootfs.tar; \
@@ -119,4 +129,5 @@ IMAGE_CMD_octagonemmc_append = "\
     rm -f -f ${DEPLOY_DIR_IMAGE}/*.json; \
     rm -Rf ${DEPLOY_DIR_IMAGE}/usb_update.bin; \
     rm -Rf ${IMAGEDIR}; \
+    rm -Rf ${DEPLOY_DIR_IMAGE}/userdata; \
     "
