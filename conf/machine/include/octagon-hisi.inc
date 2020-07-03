@@ -11,13 +11,13 @@ ROOTFS_FILE = "rootfs.tar.bz2"
 
 MACHINE_ESSENTIAL_EXTRA_RDEPENDS = "\
     octagon-dvb-modules-${MACHINE} \
-    octagon-loadmodules-${MACHINE} \ 
-    octagon-opengl-${MACHINE} \
+    octagon-loadmodules-${SOC_FAMILY} \ 
+    octagon-opengl-${SOC_FAMILY} \
     octagon-libs-${MACHINE} \
     octagon-hihalt-${MACHINE} \
     octagon-reader-${MACHINE} \
-    octagon-libreader-${MACHINE} \
-    ${@bb.utils.contains("MACHINE_FEATURES", "blindscan", "octagon-blindscan-${MACHINE}" , "", d)} \    
+    octagon-libreader-${SOC_FAMILY} \
+    ${@bb.utils.contains("MACHINE_FEATURES", "blindscan", "octagon-blindscan-${SOC_FAMILY}" , "", d)} \    
     octagon-partitions-${MACHINE} \
     octagon-buildimage \
     e2fsprogs-resize2fs \
@@ -69,13 +69,13 @@ DEFAULTTUNE = "cortexa15hf-neon-vfpv4"
 PREFERRED_VERSION_linux-octagon = "4.4.35"
 
 PREFERRED_PROVIDER_virtual/kernel = "linux-octagon"
-PREFERRED_PROVIDER_virtual/egl = "octagon-opengl-${MACHINE}" 
-PREFERRED_PROVIDER_virtual/libgles1 = "octagon-opengl-${MACHINE}"
-PREFERRED_PROVIDER_virtual/libgles2 = "octagon-opengl-${MACHINE}"
-PREFERRED_PROVIDER_virtual/blindscan-dvbs = "octagon-blindscan-${MACHINE}"
+PREFERRED_PROVIDER_virtual/egl = "octagon-opengl-${SOC_FAMILY}" 
+PREFERRED_PROVIDER_virtual/libgles1 = "octagon-opengl-${SOC_FAMILY}"
+PREFERRED_PROVIDER_virtual/libgles2 = "octagon-opengl-${SOC_FAMILY}"
+PREFERRED_PROVIDER_virtual/blindscan-dvbs = "octagon-blindscan-${SOC_FAMILY}"
 
-PREFERRED_RPROVIDER_showiframe = "octagon-showiframe-${MACHINE}"
-PREFERRED_RPROVIDER_aio-grab = "octagon-grab-${MACHINE}"
+PREFERRED_RPROVIDER_showiframe = "octagon-showiframe-${SOC_FAMILY}"
+PREFERRED_RPROVIDER_aio-grab = "octagon-grab-${SOC_FAMILY}"
 PREFERRED_PROVIDER_virtual/gstreamer1.0-dvbmediasink ?= "gstreamer1.0-plugin-dvbmediasink"
 
 require conf/machine/include/tune-cortexa15.inc
