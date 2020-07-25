@@ -34,7 +34,6 @@ SRC_URI += "http://source.mynonpublic.com/octagon/octagon-linux-${PV}-${SRCDATE}
     file://0003-dont-mark-register-as-const.patch \
     file://wifi-linux_4.4.183.patch \
     file://fix-dvbcore-buffer-read.patch \
-    file://extend_modules_space.patch \
 "
 SRC_URI_append_sf8008m += " \
 	file://fix-index-for-usb.patch \
