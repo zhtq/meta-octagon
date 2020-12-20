@@ -57,7 +57,7 @@ MACHINE_ESSENTIAL_EXTRA_RRECOMMENDS = "\
 	kernel-module-zd1211rw \
 	"
 	
-MACHINE_FEATURES += " alsa usbhost wlan switchoff osdposition hdmicec"
+MACHINE_FEATURES += " alsa usbhost wlan switchoff osdposition hdmicec HDMI AV_JACK"
 
 IMAGE_CLASSES  += "octagon-emmc_image"
 IMAGE_FSTYPES += "octagonemmc"
@@ -136,3 +136,15 @@ IMAGE_CMD_octagonemmc_append = "\
 IMAGE_CMD_prepend = " \
     rm -Rf ${IMAGE_ROOTFS}/tmp/*; \
     "
+
+BOX_BRAND = "octagon"
+
+MTD_BLACK  = "mmcblk0"
+
+SOC_FAMILY = "hisi3798mv200"
+
+STB_PLATFORM = "octagonhisil"
+
+BLINDSCAN_BINARY = "octagon-blindscan"
+
+RCNAME = "sf8008"
